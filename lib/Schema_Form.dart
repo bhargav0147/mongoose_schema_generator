@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData, FontWeight, TextAlign;
+import 'package:schema_creator/Components/CustomButton.dart';
 
 class SchemaForm extends StatefulWidget {
   @override
@@ -58,7 +59,12 @@ class _SchemaFormState extends State<SchemaForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mongoose Schema Generator'),
+        backgroundColor: Colors.blue,
+        title: const Text('Mongoose Schema Generator',style: TextStyle(
+          letterSpacing: 1.5,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,fontSize: 20
+        ),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,11 +79,34 @@ class _SchemaFormState extends State<SchemaForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      controller: _schemaNameController, // Field for schema name
-                      decoration: const InputDecoration(labelText: 'Schema Name'),
+                      controller: _schemaNameController, 
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        labelText: "Schema Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.grey),
+
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.red),
+                      
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.red),
+                      
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.blue),
+                  
+                        ),
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a schema name';
+                          return 'Please Enter A Schema Name';
                         }
                         return null;
                       },
@@ -121,15 +150,7 @@ class _SchemaFormState extends State<SchemaForm> {
                         const Text('Required'),
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed: _addField,
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black), // Set button color to blue
-                      child: const Text('Add Field',style: TextStyle(
-                      letterSpacing: 0.5,
-                      fontSize: 16,
-                      color: Colors.white
-                    ),),
-                    ),
+                    CustomButton(name: 'Add Field', onPressed: _addField)
                   ],
                 ),
               ),
@@ -153,18 +174,10 @@ class _SchemaFormState extends State<SchemaForm> {
                     textAlign: TextAlign.left,
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
+                  CustomButton(name: "Copy Code to Clipboard", onPressed: () {
                       String schemaCode = _generateSchemaCode(_schemaNameController.text.isEmpty ? 'User' : _schemaNameController.text); // Change schema name if needed
                       _copyToClipboard(schemaCode);
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.black), // Set button color to blue
-                    child: const Text('Copy Code to Clipboard',style: TextStyle(
-                      letterSpacing: 0.5,
-                      fontSize: 16,
-                      color: Colors.white
-                    ),),
-                  ),
+                    })
                 ],
               ),
             ),
